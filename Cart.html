@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Your Cart</title>
 <style>
   * {
@@ -54,10 +55,6 @@
     gap: 1rem;
     padding: 1rem 1.5rem;
     border-bottom: 1px solid #f1e2cd;
-  }
-
-  .cart-item:last-of-type {
-    border-bottom: none;
   }
 
   .cart-item img {
@@ -168,12 +165,57 @@
     background: #a3543f;
   }
 
-  .empty-cart {
+  .checkout-form {
+    display: none;
+    margin-top: 0.8rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #e8c9a0;
+  }
+
+  .checkout-form.open {
+    display: block;
+  }
+
+  .checkout-form label {
+    display: block;
+    margin: 0.7rem 0 0.25rem;
+    font-size: 0.9rem;
+    color: #4a352b;
+  }
+
+  .checkout-form input,
+  .checkout-form textarea {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #e8c9a0;
+    border-radius: 8px;
+    font: inherit;
+    background: #fdf6ec;
+  }
+
+  .empty-cart,
+  .confirmation {
     text-align: center;
     padding: 3rem 1.5rem;
     color: #a3776a;
-    font-style: italic;
     display: none;
+  }
+
+  .empty-cart {
+    font-style: italic;
+  }
+
+  .confirmation {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    color: #4a352b;
+  }
+
+  .confirmation h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #7a3b2e;
+    margin-top: 0;
   }
 
   .continue-link {
@@ -202,7 +244,8 @@
       row-gap: 0.5rem;
     }
 
-    .cart-item img {
+    .cart-item img,
+    .cart-item .no-img {
       grid-area: img;
       width: 60px;
       height: 60px;
@@ -238,128 +281,224 @@
 
   <main>
     <div class="cart" id="cart">
-      <div class="cart-item" data-price="8.50">
-        <img src="KFEJFK7.jpg" alt="Banana bread">
-        <div class="item-info">
-          <div class="item-name">Banana Bread</div>
-          <div class="item-price">R8.50 each</div>
-        </div>
-        <div class="qty-controls">
-          <button class="qty-btn minus">&minus;</button>
-          <span class="qty-value">2</span>
-          <button class="qty-btn plus">&plus;</button>
-        </div>
-        <div class="line-total">R17.00</div>
-        <button class="remove-btn" title="Remove">&times;</button>
-      </div>
-
-      <div class="cart-item" data-price="10.00">
-        <img src="big-fat-chocolate-chip-cookie-05.jpg" alt="Chocolate Chip Cookies">
-        <div class="item-info">
-          <div class="item-name">Chocolate Chip Cookies</div>
-          <div class="item-price">R60.00 each</div>
-        </div>
-        <div class="qty-controls">
-          <button class="qty-btn minus">&minus;</button>
-          <span class="qty-value">3</span>
-          <button class="qty-btn plus">&plus;</button>
-        </div>
-        <div class="line-total">R15.60</div>
-        <button class="remove-btn" title="Remove">&times;</button>
-      </div>
-
-      <div class="cart-item" data-price="10.99">
-        <img src="red-velvet-cake.webp" alt="Red Velvet Cake">
-        <div class="item-info">
-          <div class="item-name">Red Velvet Cake</div>
-          <div class="item-price">R10.99 each</div>
-        </div>
-        <div class="qty-controls">
-          <button class="qty-btn minus">&minus;</button>
-          <span class="qty-value">1</span>
-          <button class="qty-btn plus">&plus;</button>
-        </div>
-        <div class="line-total">R10.99</div>
-        <button class="remove-btn" title="Remove">&times;</button>
-      </div>
+      <div id="cart-items"></div>
 
       <div class="cart-summary">
         <div class="summary-row">
           <span>Subtotal</span>
-          <span id="subtotal">R25.35</span>
+          <span id="subtotal">R0.00</span>
         </div>
         <div class="summary-row">
           <span>Delivery</span>
-          <span>R5.00</span>
+          <span id="delivery">R0.00</span>
         </div>
         <div class="summary-row total">
           <span>Total</span>
-          <span id="total">R.35</span>
+          <span id="total">R0.00</span>
         </div>
-        <button class="checkout-btn">Proceed to Checkout</button>
+
+        <button class="checkout-btn" id="checkout-btn" type="button">Proceed to Checkout</button>
+
+        <form class="checkout-form" id="checkout-form">
+          <label for="co-name">Your name</label>
+          <input type="text" id="co-name" required autocomplete="name">
+
+          <label for="co-phone">Phone number</label>
+          <input type="tel" id="co-phone" required autocomplete="tel">
+
+          <label for="co-address">Delivery address</label>
+          <textarea id="co-address" rows="2" required autocomplete="street-address"></textarea>
+
+          <label for="co-notes">Notes (optional)</label>
+          <textarea id="co-notes" rows="2" placeholder="Allergies, delivery instructions, etc."></textarea>
+
+          <button class="checkout-btn" type="submit" style="width:100%">Place order</button>
+        </form>
       </div>
     </div>
 
     <p class="empty-cart" id="empty-message">Your cart is empty.</p>
 
-    <p class="continue-link"><a href="menu.html">&larr; Continue shopping</a></p>
+    <div class="confirmation" id="confirmation">
+      <h2>Order placed!</h2>
+      <p id="confirmation-text"></p>
+    </div>
+
+    <p class="continue-link"><a href="menu (1).html">&larr; Continue shopping</a></p>
   </main>
 
   <script>
-    const cart = document.getElementById('cart');
-    const emptyMessage = document.getElementById('empty-message');
-    const deliveryFee = 5.00;
+    var CART_KEY = 'bakeryCart';
+    var ORDERS_KEY = 'bakeryOrders';
+    var DELIVERY_FEE = 10.00;
 
-    function formatMoney(n) {
+    var cartBox = document.getElementById('cart');
+    var itemsBox = document.getElementById('cart-items');
+    var emptyMessage = document.getElementById('empty-message');
+    var confirmation = document.getElementById('confirmation');
+    var checkoutBtn = document.getElementById('checkout-btn');
+    var checkoutForm = document.getElementById('checkout-form');
+
+    // The cart is shared with the menu page: { name: { name, price, qty, img } }
+    var cart = loadJSON(CART_KEY, {});
+
+    function loadJSON(key, fallback) {
+      try {
+        var raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (e) { return fallback; }
+    }
+
+    function saveJSON(key, value) {
+      try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* ignore */ }
+    }
+
+    function money(n) {
       return 'R' + n.toFixed(2);
     }
 
-    function updateTotals() {
-      let subtotal = 0;
-      document.querySelectorAll('.cart-item').forEach(item => {
-        const price = parseFloat(item.dataset.price);
-        const qty = parseInt(item.querySelector('.qty-value').textContent, 10);
-        const lineTotal = price * qty;
-        item.querySelector('.line-total').textContent = formatMoney(lineTotal);
-        subtotal += lineTotal;
+    function make(tag, className, text) {
+      var e = document.createElement(tag);
+      if (className) e.className = className;
+      if (text !== undefined) e.textContent = text;
+      return e;
+    }
+
+    function calcSubtotal() {
+      return Object.keys(cart).reduce(function (t, k) {
+        return t + cart[k].price * cart[k].qty;
+      }, 0);
+    }
+
+    function render() {
+      itemsBox.innerHTML = '';
+      var names = Object.keys(cart);
+
+      names.forEach(function (name) {
+        var it = cart[name];
+        var row = make('div', 'cart-item');
+        row.dataset.name = name;
+
+        if (it.img) {
+          var img = document.createElement('img');
+          img.src = it.img;
+          img.alt = it.name;
+          row.appendChild(img);
+        } else {
+          row.appendChild(make('div', 'no-img'));
+        }
+
+        var info = make('div', 'item-info');
+        info.appendChild(make('div', 'item-name', it.name));
+        info.appendChild(make('div', 'item-price', money(it.price) + ' each'));
+        row.appendChild(info);
+
+        var qty = make('div', 'qty-controls');
+        var minus = make('button', 'qty-btn minus', '\u2212');
+        minus.type = 'button';
+        minus.setAttribute('aria-label', 'Remove one ' + it.name);
+        var qtyValue = make('span', 'qty-value', String(it.qty));
+        var plus = make('button', 'qty-btn plus', '+');
+        plus.type = 'button';
+        plus.setAttribute('aria-label', 'Add one ' + it.name);
+        qty.appendChild(minus);
+        qty.appendChild(qtyValue);
+        qty.appendChild(plus);
+        row.appendChild(qty);
+
+        row.appendChild(make('div', 'line-total', money(it.price * it.qty)));
+
+        var remove = make('button', 'remove-btn', '\u00D7');
+        remove.type = 'button';
+        remove.title = 'Remove';
+        remove.setAttribute('aria-label', 'Remove ' + it.name);
+        row.appendChild(remove);
+
+        itemsBox.appendChild(row);
       });
 
-      document.getElementById('subtotal').textContent = formatMoney(subtotal);
-      document.getElementById('total').textContent = formatMoney(subtotal + (subtotal > 0 ? deliveryFee : 0));
+      var subtotal = calcSubtotal();
+      var delivery = subtotal > 0 ? DELIVERY_FEE : 0;
+      document.getElementById('subtotal').textContent = money(subtotal);
+      document.getElementById('delivery').textContent = money(delivery);
+      document.getElementById('total').textContent = money(subtotal + delivery);
 
-      const hasItems = document.querySelectorAll('.cart-item').length > 0;
-      cart.style.display = hasItems ? 'block' : 'none';
+      var hasItems = names.length > 0;
+      cartBox.style.display = hasItems ? 'block' : 'none';
       emptyMessage.style.display = hasItems ? 'none' : 'block';
     }
 
-    cart.addEventListener('click', (e) => {
-      const item = e.target.closest('.cart-item');
-      if (!item) return;
+    itemsBox.addEventListener('click', function (e) {
+      var row = e.target.closest('.cart-item');
+      if (!row) return;
+      var name = row.dataset.name;
+      if (!cart[name]) return;
 
       if (e.target.classList.contains('plus')) {
-        const qtyEl = item.querySelector('.qty-value');
-        qtyEl.textContent = parseInt(qtyEl.textContent, 10) + 1;
-        updateTotals();
+        cart[name].qty += 1;
+      } else if (e.target.classList.contains('minus')) {
+        cart[name].qty -= 1;
+        if (cart[name].qty <= 0) delete cart[name];
+      } else if (e.target.classList.contains('remove-btn')) {
+        delete cart[name];
+      } else {
+        return;
       }
 
-      if (e.target.classList.contains('minus')) {
-        const qtyEl = item.querySelector('.qty-value');
-        const newQty = parseInt(qtyEl.textContent, 10) - 1;
-        if (newQty <= 0) {
-          item.remove();
-        } else {
-          qtyEl.textContent = newQty;
-        }
-        updateTotals();
-      }
-
-      if (e.target.classList.contains('remove-btn')) {
-        item.remove();
-        updateTotals();
-      }
+      saveJSON(CART_KEY, cart);
+      render();
     });
 
-    updateTotals();
+    checkoutBtn.addEventListener('click', function () {
+      checkoutBtn.style.display = 'none';
+      checkoutForm.classList.add('open');
+      document.getElementById('co-name').focus();
+    });
+
+    checkoutForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var subtotal = calcSubtotal();
+      var order = {
+        id: 'BK' + Date.now().toString().slice(-6),
+        customer: document.getElementById('co-name').value.trim(),
+        phone: document.getElementById('co-phone').value.trim(),
+        address: document.getElementById('co-address').value.trim(),
+        notes: document.getElementById('co-notes').value.trim(),
+        items: Object.keys(cart).map(function (k) { return cart[k]; }),
+        subtotal: subtotal,
+        delivery: DELIVERY_FEE,
+        total: subtotal + DELIVERY_FEE,
+        placedAt: new Date().toISOString()
+      };
+
+      placeOrder(order);
+
+      cart = {};
+      saveJSON(CART_KEY, cart);
+
+      cartBox.style.display = 'none';
+      emptyMessage.style.display = 'none';
+      confirmation.style.display = 'block';
+      document.getElementById('confirmation-text').textContent =
+        'Thank you, ' + order.customer + '! Your order number is ' + order.id +
+        '. Total: ' + money(order.total) + '.';
+    });
+
+    // Right now the order is only saved in this browser so you can test the flow.
+    // To take real orders and payments, replace the body of this function with a
+    // call to your server or payment provider, e.g.:
+    //   fetch('/api/orders', { method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify(order) });
+    function placeOrder(order) {
+      var orders = loadJSON(ORDERS_KEY, []);
+      orders.push(order);
+      saveJSON(ORDERS_KEY, orders);
+      console.log('Order placed:', order);
+    }
+
+    render();
   </script>
 
 </body>

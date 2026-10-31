@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Contact Us</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="contact.js" defer></script>
 </head>
 <body>
 
@@ -18,7 +21,7 @@
         <div class="form-img">
           <img src="contact page.webp" alt="Contact us">
         </div>
-        <form action="#" method="post" class="content">
+        <form action="#" method="post" class="content" novalidate>
           <label for="name">Name</label>
           <input type="text" id="name" name="name" placeholder="Enter your name" required>
 
@@ -26,12 +29,17 @@
           <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
           <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Your message" rows="5" required></textarea>
+          <textarea id="message" name="message" placeholder="Your message" rows="3" required></textarea>
 
-          <button type="submit" class="btn">Send <i class="fas fa-paper-plane"></i></button>
+          <div class="form-actions">
+            <button type="submit" class="btn">Send by email <i class="fas fa-paper-plane"></i></button>
+            <button type="button" class="btn wa-btn" id="wa-btn">Send on WhatsApp <i class="fab fa-whatsapp"></i></button>
+          </div>
         </form>
       </div>
     </section>
+
+    <section class="hours" id="hours"></section>
   </main>
 
   <nav class="page-nav">
